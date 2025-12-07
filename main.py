@@ -208,6 +208,7 @@ def build_parser():
     pt.add_argument("--accelerator", default="gpu")  # or "cpu"
     pt.add_argument("--patience", type=int, default=5)
     pt.add_argument("--limit_train_batches", type=float, default=1.0)
+    pt.add_argument("--labels_csv", default="labels.csv", help="Path to CSV file with image paths and labels")
 
     # test args
     pe = sub.add_parser("test", help="Evaluate a checkpoint on ONE noise severity")
