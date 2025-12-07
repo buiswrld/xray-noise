@@ -166,7 +166,6 @@ def cmd_test(args):
     metrics = {k: float(v) for k, v in metrics.items()}
     metrics["panel"] = tag
 
-    # Choose the columns that likely exist from ClassificationTask logs
     keys = ["panel"]
     for k in ["test_auroc", "test_auprc", "test_loss", "test_precision", "test_recall", "test_f1"]:
         if k in metrics:
