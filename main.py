@@ -13,12 +13,17 @@ from dataset import ChestXrayDataset
 
 #utils
 
-def seed_everything(seed=42):
+def seed_everything(seed=0):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     pl.seed_everything(seed, workers=True)
+
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % (2**32)
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
 
 def default_transforms(img_size=224, is_train=False):
     tf = [
@@ -53,11 +58,6 @@ def make_loader(
         poisson_intensity=poisson_intensity,
         gaussian_intensity=gaussian_intensity,
     )
-
-    def seed_worker(worker_id):
-        worker_seed = (seed + worker_id) % (2**32)
-        np.random.seed(worker_seed)
-        random.seed(worker_seed)
 
     g = torch.Generator()
     g.manual_seed(seed)  # controls shuffling order
@@ -222,6 +222,7 @@ def build_parser():
     pe.add_argument("--seed", type=int, default=42)
     pe.add_argument("--devices", default=1, type=int)
     pe.add_argument("--accelerator", default="gpu")
+    pe.add_argument("--labels_csv", default="labels.csv", help="Path to CSV file with image paths and labels")
 
     return p
 
