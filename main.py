@@ -248,7 +248,7 @@ def build_parser():
     # train args
     pt = sub.add_parser("train", help="Train a model on clean data")
     pt.add_argument("--data_root", required=True, help="Folder with train/, val/, test/ subdirs")
-    pt.add_argument("--model", default="resnet18", choices=["resnet18","densenet121","custom"])
+    pt.add_argument("--model", default="basic")
     pt.add_argument("--batch_size", type=int, default=32)
     pt.add_argument("--epochs", type=int, default=20)
     pt.add_argument("--lr", type=float, default=1e-3)
