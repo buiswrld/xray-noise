@@ -1,5 +1,9 @@
 # CKPT="./checkpoints/resnet121-epoch=00-val_auroc=1.000.ckpt"
-CKPT="./checkpoints/densenet121-epoch=04-val_auroc=1.000.ckpt"
+# CKPT="./checkpoints/densenet121-epoch=04-val_auroc=1.000.ckpt"
+# CKPT="./checkpoints/basic-epoch=00-val_auroc=0.906.ckpt"
+# CKPT="checkpoints/resnet34-epoch=02-val_auroc=1.000.ckpt"
+# CKPT="checkpoints/mobilenet_v2-epoch=00-val_auroc=1.000.ckpt"
+CKPT="checkpoints/efficientnet_b0-epoch=00-val_auroc=1.000.ckpt"
 
 BASE_CMD="python main.py test \
   --data_root chest_xray \

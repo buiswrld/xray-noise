@@ -1,0 +1,2 @@
+panel,prevalence_y1,test_auroc,test_auprc,test_precision,test_recall,test_f1,tp,fp,tn,fn
+clean,0.625,0.9349769949913025,0.9366867542266846,0.7442747950553894,1.0,0.853391706943512,390,134,100,0
