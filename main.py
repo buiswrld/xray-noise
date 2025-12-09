@@ -6,6 +6,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 from pytorch_lightning.loggers import TensorBoardLogger
 from torch.utils.data import DataLoader
 from torchvision import transforms
+from torchmetrics.classification import BinaryAUROC, BinaryAveragePrecision, BinaryPrecision, BinaryRecall, BinaryF1Score
 
 from classifier import ClassificationTask
 from dataset import ChestXrayDataset
@@ -20,7 +21,7 @@ def seed_everything(seed=0):
     torch.cuda.manual_seed_all(seed)
     pl.seed_everything(seed, workers=True)
 
-def seed_worker(worker_id):
+def seed_worker(worker_id): 
     worker_seed = torch.initial_seed() % (2**32)
     np.random.seed(worker_seed)
     random.seed(worker_seed)
@@ -106,7 +107,7 @@ def cmd_train(args):
         max_epochs=args.epochs,
         callbacks=[ckpt_cb, es_cb],
         logger=logger,
-        precision="16-mixed",
+        precision="32-",
         deterministic=True,
         devices=args.devices,
         accelerator=args.accelerator,
@@ -136,54 +137,8 @@ def _pretty_print_one_row(row: dict, keys: list):
     print(rowfmt(row))
     print(line())
 
-def cmd_test(args):
-    seed_everything(args.seed)
 
-    # load model from checkpoint
-    if args.model is None:
-        model = ClassificationTask.load_from_checkpoint(args.model_ckpt)
-    else:
-        model = ClassificationTask(backbone=args.model, lr=1e-3)
 
-    trainer = pl.Trainer(
-        logger=False, enable_checkpointing=False,
-        devices=args.devices, accelerator=args.accelerator,
-        precision="16-mixed", deterministic=True
-    )
-
-    # build test loader with specified noise severity
-    sev = float(args.noise)
-    loader = make_loader(
-        args.data_root, "test", args.batch_size, args.num_workers,
-        poisson_intensity=sev, gaussian_intensity=0.0,
-        img_size=args.img_size, shuffle=False, seed=args.seed
-    )
-    tag = "clean" if sev == 0.0 else f"poisson_{sev:g}"
-    print(f"\n==> Testing panel: {tag}")
-
-    out = trainer.test(model, dataloaders=loader, ckpt_path=args.model_ckpt, verbose=False)
-    metrics = out[0] if isinstance(out, list) else out
-    metrics = {k: float(v) for k, v in metrics.items()}
-    metrics["panel"] = tag
-
-    keys = ["panel"]
-    for k in ["test_auroc", "test_auprc", "test_loss", "test_precision", "test_recall", "test_f1"]:
-        if k in metrics:
-            keys.append(k)
-
-    _pretty_print_one_row(metrics, keys)
-
-    # save to CSV next to the model checkpoint
-    csv_dir = os.path.join(os.path.dirname(args.model_ckpt), "eval")
-    os.makedirs(csv_dir, exist_ok=True)
-    ck = os.path.basename(args.model_ckpt).replace(".ckpt","")
-    csv_path = os.path.join(csv_dir, f"metrics_{ck}_{tag}.csv")
-    with open(csv_path, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=keys)
-        w.writeheader()
-        r_out = {k: (round(metrics[k], 6) if isinstance(metrics.get(k), float) else metrics.get(k)) for k in keys}
-        w.writerow(r_out)
-    print(f"Saved: {csv_path}")
 
 
 # CLI args
@@ -203,7 +158,7 @@ def build_parser():
     pt.add_argument("--num_workers", type=int, default=8)
     pt.add_argument("--ckptdir", default="checkpoints")
     pt.add_argument("--logdir", default="runs")
-    pt.add_argument("--seed", type=int, default=42)
+    pt.add_argument("--seed", type=int, default=0)
     pt.add_argument("--devices", default=1, type=int)
     pt.add_argument("--accelerator", default="gpu")  # or "cpu"
     pt.add_argument("--patience", type=int, default=5)
@@ -219,7 +174,7 @@ def build_parser():
     pe.add_argument("--batch_size", type=int, default=32)
     pe.add_argument("--img_size", type=int, default=224)
     pe.add_argument("--num_workers", type=int, default=8)
-    pe.add_argument("--seed", type=int, default=42)
+    pe.add_argument("--seed", type=int, default=0)
     pe.add_argument("--devices", default=1, type=int)
     pe.add_argument("--accelerator", default="gpu")
     pe.add_argument("--labels_csv", default="labels.csv", help="Path to CSV file with image paths and labels")
