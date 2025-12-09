@@ -107,7 +107,7 @@ def cmd_train(args):
         max_epochs=args.epochs,
         callbacks=[ckpt_cb, es_cb],
         logger=logger,
-        precision="32-",
+        precision="32",
         deterministic=True,
         devices=args.devices,
         accelerator=args.accelerator,
@@ -163,7 +163,7 @@ def cmd_test(args):
         poisson_intensity=sev_p, gaussian_intensity=sev_g,
         img_size=args.img_size, shuffle=False, seed=args.seed
     )
-    tag = "clean" if sev == 0.0 else f"poisson_{sev:g}"
+    tag = "clean" if sev_p == 0.0 and sev_g == 0.0 else f"poisson_{sev_p:g}_gaussian_{sev_g:g}"
     print(f"\n==> Testing panel: {tag}")
 
     auroc     = BinaryAUROC()
@@ -218,15 +218,24 @@ def cmd_test(args):
     print("\nResult:")
     print(res)
 
+    # save csv of results
     csv_dir = os.path.join(os.path.dirname(args.model_ckpt), "eval")
     os.makedirs(csv_dir, exist_ok=True)
-    ck = os.path.basename(args.model_ckpt).replace(".ckpt","")
-    csv_path = os.path.join(csv_dir, f"probe_metrics_{ck}_{tag}.csv")
+    ck_base = os.path.basename(args.model_ckpt).replace(".ckpt", "")
+    model_name = ck_base.split("-")[0]
+
+    gauss_str = str(int(args.gauss))
+    poiss_str = str(int(args.poiss))
+
+    csv_path = os.path.join(csv_dir, f"{model_name}-gauss{gauss_str}-poiss{poiss_str}.csv")
+
     with open(csv_path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["prob", "label"])
-        writer.writerows(rows)
-    print(f"Saved per-sample probs to {csv_path}")
+        writer.writerow(res.keys())
+        writer.writerow(res.values())
+
+    print(f"Saved metrics to {csv_path}")
+
 
 
 
