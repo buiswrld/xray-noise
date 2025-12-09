@@ -48,5 +48,6 @@ def build_model(name: str = "resnet18", in_channels: int = 1) -> nn.Module:
         def forward(self, x):
             x = self.feature(x).flatten(1)
             return self.head(x)
-
-    return BasicCNN(in_channels)
+        
+    if name == "basic":
+        return BasicCNN(in_channels)
