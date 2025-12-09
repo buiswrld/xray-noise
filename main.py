@@ -137,7 +137,94 @@ def _pretty_print_one_row(row: dict, keys: list):
     print(rowfmt(row))
     print(line())
 
+def cmd_test(args):
+    seed_everything(args.seed)
 
+
+    if args.model is None:
+        model = ClassificationTask.load_from_checkpoint(args.model_ckpt)
+    else:
+        model = ClassificationTask(backbone=args.model, lr=1e-3)
+    model.eval()
+
+    if args.accelerator == "mps":
+        device = torch.device("mps")
+    elif args.accelerator == "gpu" and torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+    model.to(device)
+
+    sev = float(args.noise)
+    loader = make_loader(
+        args.data_root, "test", args.batch_size, args.num_workers,
+        poisson_intensity=sev, gaussian_intensity=0.0,
+        img_size=args.img_size, shuffle=False, seed=args.seed
+    )
+    tag = "clean" if sev == 0.0 else f"poisson_{sev:g}"
+    print(f"\n==> Testing panel: {tag}")
+
+    auroc     = BinaryAUROC()
+    auprc     = BinaryAveragePrecision()
+    prec_m    = BinaryPrecision()
+    rec_m     = BinaryRecall()
+    f1_m      = BinaryF1Score()
+
+    tp = fp = tn = fn = 0
+    rows = []
+
+    with torch.no_grad():
+        for x, y in loader:
+            x = x.to(device)
+            y = y.to(torch.int64)
+
+            logits = model(x)
+            if logits.ndim == 2 and logits.size(1) == 1:
+                logits = logits.squeeze(1)
+            probs = torch.sigmoid(logits)
+
+            probs_cpu = probs.cpu()
+            y_cpu = y.cpu()
+
+            auroc.update(probs_cpu, y_cpu)
+            auprc.update(probs_cpu, y_cpu)
+            prec_m.update(probs_cpu, y_cpu)
+            rec_m.update(probs_cpu, y_cpu)
+            f1_m.update(probs_cpu, y_cpu)
+
+            preds = (probs_cpu >= 0.5).to(torch.int64)
+            tp += int(((preds == 1) & (y_cpu == 1)).sum())
+            fp += int(((preds == 1) & (y_cpu == 0)).sum())
+            tn += int(((preds == 0) & (y_cpu == 0)).sum())
+            fn += int(((preds == 0) & (y_cpu == 1)).sum())
+
+            for p, label in zip(probs_cpu.tolist(), y_cpu.tolist()):
+                rows.append([p, label])
+
+    prevalence = (tp + fn) / (tp + fp + tn + fn)
+    res = {
+        "panel": tag,
+        "prevalence_y1": prevalence,
+        "test_auroc": float(auroc.compute().item()),
+        "test_auprc": float(auprc.compute().item()),
+        "test_precision": float(prec_m.compute().item()),
+        "test_recall": float(rec_m.compute().item()),
+        "test_f1": float(f1_m.compute().item()),
+        "tp": tp, "fp": fp, "tn": tn, "fn": fn,
+    }
+
+    print("\nResult:")
+    print(res)
+
+    csv_dir = os.path.join(os.path.dirname(args.model_ckpt), "eval")
+    os.makedirs(csv_dir, exist_ok=True)
+    ck = os.path.basename(args.model_ckpt).replace(".ckpt","")
+    csv_path = os.path.join(csv_dir, f"probe_metrics_{ck}_{tag}.csv")
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["prob", "label"])
+        writer.writerows(rows)
+    print(f"Saved per-sample probs to {csv_path}")
 
 
 
@@ -169,8 +256,8 @@ def build_parser():
     pe = sub.add_parser("test", help="Evaluate a checkpoint on ONE noise severity")
     pe.add_argument("--data_root", required=True, help="Folder with train/, val/, test/ subdirs")
     pe.add_argument("--model_ckpt", required=True, help="Path to .ckpt")
-    pe.add_argument("--poiss", "-p", type=int, default=0, help="Poisson noise intensity")
-    pe.add_argument("--gauss", "-g", type=int, default=0, help="Gaussian noise intensity")
+    pe.add_argument("--gauss", type=int, default=0, help="gaussian noise")
+    pe.add_argument("--poiss", type=int, default=0, help="poisson noise")
     pe.add_argument("--model", default=None, choices=[None,"resnet18","densenet121","custom"])
     pe.add_argument("--batch_size", type=int, default=32)
     pe.add_argument("--img_size", type=int, default=224)
