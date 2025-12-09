@@ -22,6 +22,9 @@ def _to_1ch_first_conv(conv3: nn.Conv2d) -> nn.Conv2d:
 
 def build_model(name: str = "resnet18", in_channels: int = 1) -> nn.Module:
     name = name.lower()
+    # ----------------------
+    # ResNet18 (baseline)
+    # ----------------------
     if name == "resnet18":
         m = tv.resnet18(weights=tv.ResNet18_Weights.IMAGENET1K_V1)
         if in_channels == 1:
@@ -29,12 +32,54 @@ def build_model(name: str = "resnet18", in_channels: int = 1) -> nn.Module:
         m.fc = nn.Linear(m.fc.in_features, 1)
         return m
 
+    # ----------------------
+    # ResNet34 (deeper ResNet)
+    # ----------------------
+    if name == "resnet34":
+        m = tv.resnet34(weights=tv.ResNet34_Weights.IMAGENET1K_V1)
+        if in_channels == 1:
+            m.conv1 = _to_1ch_first_conv(m.conv1)
+        m.fc = nn.Linear(m.fc.in_features, 1)
+        return m
+
+    # ----------------------
+    # DenseNet121 (dense connections)
+    # ----------------------
     if name == "densenet121":
         m = tv.densenet121(weights=tv.DenseNet121_Weights.IMAGENET1K_V1)
         if in_channels == 1:
             m.features.conv0 = _to_1ch_first_conv(m.features.conv0)
         m.classifier = nn.Linear(m.classifier.in_features, 1)
         return m
+
+    # ----------------------
+    # MobileNetV2 (lightweight / mobile)
+    # ----------------------
+    if name == "mobilenet_v2":
+        m = tv.mobilenet_v2(weights=tv.MobileNet_V2_Weights.IMAGENET1K_V1)
+        if in_channels == 1:
+            # first conv is features[0][0]
+            m.features[0][0] = _to_1ch_first_conv(m.features[0][0])
+        # classifier is [0] dropout, [1] linear
+        m.classifier[1] = nn.Linear(m.classifier[1].in_features, 1)
+        return m
+
+    # ----------------------
+    # EfficientNet-B0 (modern efficient CNN)
+    # ----------------------
+    if name == "efficientnet_b0":
+        m = tv.efficientnet_b0(weights=tv.EfficientNet_B0_Weights.IMAGENET1K_V1)
+        if in_channels == 1:
+            # first conv is features[0][0]
+            m.features[0][0] = _to_1ch_first_conv(m.features[0][0])
+        # classifier is [0] dropout, [1] linear
+        m.classifier[1] = nn.Linear(m.classifier[1].in_features, 1)
+        return m
+    
+
+    # ----------------------
+    # Basic CNN
+    # ----------------------
 
     class BasicCNN(nn.Module):
         def __init__(self, in_ch=1):
