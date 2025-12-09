@@ -155,10 +155,12 @@ def cmd_test(args):
         device = torch.device("cpu")
     model.to(device)
 
-    sev = float(args.noise)
+    sev_p = float(args.poiss)   # Poisson
+    sev_g = float(args.gauss)   # Gaussian
+
     loader = make_loader(
         args.data_root, "test", args.batch_size, args.num_workers,
-        poisson_intensity=sev, gaussian_intensity=0.0,
+        poisson_intensity=sev_p, gaussian_intensity=sev_g,
         img_size=args.img_size, shuffle=False, seed=args.seed
     )
     tag = "clean" if sev == 0.0 else f"poisson_{sev:g}"
