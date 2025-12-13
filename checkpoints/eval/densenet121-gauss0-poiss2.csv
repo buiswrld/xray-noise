@@ -1,0 +1,2 @@
+panel,prevalence_y1,test_auroc,test_auprc,test_precision,test_recall,test_f1,tp,fp,tn,fn
+poisson_2_gaussian_0,0.625,0.9257670640945435,0.9338261485099792,0.7514563202857971,0.9923076629638672,0.8552486300468445,387,128,106,3

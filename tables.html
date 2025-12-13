@@ -1,0 +1,752 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Noise Robustness Summary Tables</title>
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #f7f7f9;
+    color: #222;
+    padding: 20px;
+}
+h1, h2, h3 {
+    color: #333;
+}
+.section {
+    margin-bottom: 40px;
+}
+.table-container {
+    margin-bottom: 30px;
+    overflow-x: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 200px;
+    min-width: 700px;
+    background-color: #fff;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+th {
+    background-color: #f0f0f5;
+    font-weight: 600;
+}
+tr:nth-child(even) {
+    background-color: #fafafa;
+}
+caption {
+    caption-side: top;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.metric-note {
+    font-size: 0.85rem;
+    color: #555;
+}
+</style>
+</head>
+<body>
+<h1>Noise Robustness Summary Tables</h1>
+<p class="metric-note">
+</p>
+
+<div class="section"><h2>AUROC</h2>
+<h3>Poisson-only noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Poisson Intensity</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.809</td>
+      <td>0.727</td>
+      <td>0.385</td>
+      <td>0.215</td>
+      <td>0.170</td>
+      <td>0.110</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.931</td>
+      <td>0.926</td>
+      <td>0.922</td>
+      <td>0.917</td>
+      <td>0.916</td>
+      <td>0.915</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.923</td>
+      <td>0.873</td>
+      <td>0.778</td>
+      <td>0.622</td>
+      <td>0.535</td>
+      <td>0.471</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.940</td>
+      <td>0.932</td>
+      <td>0.927</td>
+      <td>0.927</td>
+      <td>0.931</td>
+      <td>0.915</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.962</td>
+      <td>0.957</td>
+      <td>0.949</td>
+      <td>0.932</td>
+      <td>0.905</td>
+      <td>0.874</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.935</td>
+      <td>0.935</td>
+      <td>0.928</td>
+      <td>0.918</td>
+      <td>0.909</td>
+      <td>0.905</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Gaussian-only noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Gaussian Intensity</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.809</td>
+      <td>0.671</td>
+      <td>0.245</td>
+      <td>0.157</td>
+      <td>0.148</td>
+      <td>0.141</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.931</td>
+      <td>0.928</td>
+      <td>0.927</td>
+      <td>0.923</td>
+      <td>0.919</td>
+      <td>0.917</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.923</td>
+      <td>0.859</td>
+      <td>0.744</td>
+      <td>0.599</td>
+      <td>0.475</td>
+      <td>0.329</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.940</td>
+      <td>0.925</td>
+      <td>0.920</td>
+      <td>0.917</td>
+      <td>0.909</td>
+      <td>0.890</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.962</td>
+      <td>0.958</td>
+      <td>0.943</td>
+      <td>0.891</td>
+      <td>0.778</td>
+      <td>0.604</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.935</td>
+      <td>0.934</td>
+      <td>0.922</td>
+      <td>0.910</td>
+      <td>0.903</td>
+      <td>0.896</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Combined noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Combined Noise Intensity</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.536</td>
+      <td>0.186</td>
+      <td>0.158</td>
+      <td>0.109</td>
+      <td>0.085</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.923</td>
+      <td>0.913</td>
+      <td>0.900</td>
+      <td>0.863</td>
+      <td>0.836</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.822</td>
+      <td>0.590</td>
+      <td>0.406</td>
+      <td>0.284</td>
+      <td>0.301</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.917</td>
+      <td>0.915</td>
+      <td>0.912</td>
+      <td>0.853</td>
+      <td>0.713</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.954</td>
+      <td>0.915</td>
+      <td>0.771</td>
+      <td>0.525</td>
+      <td>0.358</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.931</td>
+      <td>0.907</td>
+      <td>0.899</td>
+      <td>0.872</td>
+      <td>0.864</td>
+    </tr>
+  </tbody>
+</table></div>
+</div>
+<div class="section"><h2>AUPRC</h2>
+<h3>Poisson-only noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Poisson Intensity</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.892</td>
+      <td>0.825</td>
+      <td>0.568</td>
+      <td>0.472</td>
+      <td>0.452</td>
+      <td>0.432</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.939</td>
+      <td>0.934</td>
+      <td>0.928</td>
+      <td>0.923</td>
+      <td>0.929</td>
+      <td>0.937</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.922</td>
+      <td>0.881</td>
+      <td>0.784</td>
+      <td>0.659</td>
+      <td>0.597</td>
+      <td>0.567</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.951</td>
+      <td>0.941</td>
+      <td>0.928</td>
+      <td>0.927</td>
+      <td>0.938</td>
+      <td>0.924</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.976</td>
+      <td>0.974</td>
+      <td>0.969</td>
+      <td>0.958</td>
+      <td>0.940</td>
+      <td>0.918</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.937</td>
+      <td>0.937</td>
+      <td>0.932</td>
+      <td>0.925</td>
+      <td>0.919</td>
+      <td>0.915</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Gaussian-only noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Gaussian Intensity</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.892</td>
+      <td>0.767</td>
+      <td>0.492</td>
+      <td>0.452</td>
+      <td>0.446</td>
+      <td>0.442</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.939</td>
+      <td>0.937</td>
+      <td>0.932</td>
+      <td>0.930</td>
+      <td>0.929</td>
+      <td>0.933</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.922</td>
+      <td>0.858</td>
+      <td>0.750</td>
+      <td>0.641</td>
+      <td>0.569</td>
+      <td>0.503</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.951</td>
+      <td>0.926</td>
+      <td>0.915</td>
+      <td>0.912</td>
+      <td>0.908</td>
+      <td>0.888</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.976</td>
+      <td>0.974</td>
+      <td>0.963</td>
+      <td>0.925</td>
+      <td>0.842</td>
+      <td>0.697</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.937</td>
+      <td>0.937</td>
+      <td>0.928</td>
+      <td>0.918</td>
+      <td>0.912</td>
+      <td>0.907</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Combined noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Combined Noise Intensity</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.661</td>
+      <td>0.460</td>
+      <td>0.447</td>
+      <td>0.431</td>
+      <td>0.425</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.930</td>
+      <td>0.915</td>
+      <td>0.908</td>
+      <td>0.892</td>
+      <td>0.887</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.819</td>
+      <td>0.642</td>
+      <td>0.534</td>
+      <td>0.482</td>
+      <td>0.489</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.912</td>
+      <td>0.909</td>
+      <td>0.923</td>
+      <td>0.862</td>
+      <td>0.737</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.972</td>
+      <td>0.945</td>
+      <td>0.845</td>
+      <td>0.644</td>
+      <td>0.520</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.934</td>
+      <td>0.918</td>
+      <td>0.910</td>
+      <td>0.893</td>
+      <td>0.895</td>
+    </tr>
+  </tbody>
+</table></div>
+</div>
+<div class="section"><h2>F1-score</h2>
+<h3>Poisson-only noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Poisson Intensity</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.774</td>
+      <td>0.772</td>
+      <td>0.769</td>
+      <td>0.769</td>
+      <td>0.768</td>
+      <td>0.757</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.867</td>
+      <td>0.855</td>
+      <td>0.832</td>
+      <td>0.813</td>
+      <td>0.789</td>
+      <td>0.777</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.880</td>
+      <td>0.832</td>
+      <td>0.798</td>
+      <td>0.777</td>
+      <td>0.774</td>
+      <td>0.770</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.908</td>
+      <td>0.870</td>
+      <td>0.832</td>
+      <td>0.811</td>
+      <td>0.797</td>
+      <td>0.781</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.882</td>
+      <td>0.877</td>
+      <td>0.862</td>
+      <td>0.845</td>
+      <td>0.812</td>
+      <td>0.796</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.853</td>
+      <td>0.841</td>
+      <td>0.818</td>
+      <td>0.793</td>
+      <td>0.777</td>
+      <td>0.772</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Gaussian-only noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Gaussian Intensity</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.774</td>
+      <td>0.771</td>
+      <td>0.769</td>
+      <td>0.768</td>
+      <td>0.764</td>
+      <td>0.763</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.867</td>
+      <td>0.848</td>
+      <td>0.818</td>
+      <td>0.788</td>
+      <td>0.776</td>
+      <td>0.770</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.880</td>
+      <td>0.829</td>
+      <td>0.802</td>
+      <td>0.781</td>
+      <td>0.773</td>
+      <td>0.770</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.908</td>
+      <td>0.846</td>
+      <td>0.810</td>
+      <td>0.788</td>
+      <td>0.771</td>
+      <td>0.770</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.882</td>
+      <td>0.869</td>
+      <td>0.839</td>
+      <td>0.804</td>
+      <td>0.785</td>
+      <td>0.768</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.853</td>
+      <td>0.832</td>
+      <td>0.802</td>
+      <td>0.778</td>
+      <td>0.772</td>
+      <td>0.769</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Combined noise</h3>
+<div class="table-container"><table border="1" class="dataframe metric-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Combined Noise Intensity</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>basic</th>
+      <td>0.769</td>
+      <td>0.769</td>
+      <td>0.768</td>
+      <td>0.764</td>
+      <td>0.764</td>
+    </tr>
+    <tr>
+      <th>densenet121</th>
+      <td>0.836</td>
+      <td>0.793</td>
+      <td>0.774</td>
+      <td>0.769</td>
+      <td>0.769</td>
+    </tr>
+    <tr>
+      <th>efficientnet_b0</th>
+      <td>0.817</td>
+      <td>0.784</td>
+      <td>0.772</td>
+      <td>0.769</td>
+      <td>0.769</td>
+    </tr>
+    <tr>
+      <th>mobilenet_v2</th>
+      <td>0.827</td>
+      <td>0.790</td>
+      <td>0.770</td>
+      <td>0.769</td>
+      <td>0.769</td>
+    </tr>
+    <tr>
+      <th>resnet18</th>
+      <td>0.861</td>
+      <td>0.814</td>
+      <td>0.774</td>
+      <td>0.760</td>
+      <td>0.727</td>
+    </tr>
+    <tr>
+      <th>resnet34</th>
+      <td>0.823</td>
+      <td>0.782</td>
+      <td>0.769</td>
+      <td>0.769</td>
+      <td>0.769</td>
+    </tr>
+  </tbody>
+</table></div>
+</div>
+</body></html>
